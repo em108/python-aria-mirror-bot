@@ -1,0 +1,24 @@
+version: "1"
+rules:
+  - base: master
+    upstream: lzzy12:master
+    mergeMethod: merge
+    mergeUnstable: false
+  - base: develop
+    upstream: lzzy12:develop
+    mergeMethod: merge
+  - base: megadl
+    upstream: lzzy12:megadl
+    mergeMethod: merge
+  - base: staging-3.0
+    upstream: lzzy12:staging-3.0
+    mergeMethod: merge
+  - base: staging-4.0-mega
+    upstream: lzzy12:staging-4.0-mega
+    mergeMethod: merge
+  - base: staging-4.0
+    upstream: lzzy12:staging-4.0
+    mergeMethod: merge
+  - base: staging
+    upstream: lzzy12:staging
+    mergeMethod: merge
