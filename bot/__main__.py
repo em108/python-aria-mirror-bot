@@ -25,12 +25,10 @@ def stats(update, context):
     free = get_readable_file_size(free)
     cpuUsage = psutil.cpu_percent(interval=0.5)
     memory = psutil.virtual_memory().percent
-    stats = f'Bot Uptime: {currentTime}\n' \
-            f'Total disk space: {total}\n' \
-            f'Used: {used}\n' \
-            f'Free: {free}\n' \
-            f'CPU: {cpuUsage}%\n' \
-            f'RAM: {memory}%'
+    stats = f"<b>Bot Uptime:</b> <code>{currentTime}</code>\n" \
+            f"<b>Total disk space:</b> <code>{total}</code>\n" \
+            f"<b>Used:</b> <code>{used}</code>\n" \
+            f"<b>Free:</b> <code>{free}</code>"
     sendMessage(stats, context.bot, update)
 
 

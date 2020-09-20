@@ -13,19 +13,19 @@ URL_REGEX = r"(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+"
 
 
 class MirrorStatus:
-    STATUS_UPLOADING = "Uploading"
-    STATUS_DOWNLOADING = "Downloading"
-    STATUS_WAITING = "Queued"
-    STATUS_FAILED = "Failed. Cleaning download"
-    STATUS_CANCELLED = "Cancelled"
-    STATUS_ARCHIVING = "Archiving"
-    STATUS_EXTRACTING = "Extracting"
+    STATUS_UPLOADING = "Uploading...📤"
+    STATUS_DOWNLOADING = "Downloading...📥"
+    STATUS_WAITING = "Queued...📝"
+    STATUS_FAILED = "Failed 🚫. Cleaning download"
+    STATUS_CANCELLED = "Cancelled ❎"
+    STATUS_ARCHIVING = "Archiving...🔐"
+    STATUS_EXTRACTING = "Extracting...📂"
 
 
 PROGRESS_MAX_SIZE = 100 // 8
 PROGRESS_INCOMPLETE = ['▏', '▎', '▍', '▌', '▋', '▊', '▉']
 
-SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+SIZE_UNITS = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB']
 
 
 class setInterval:
@@ -48,7 +48,7 @@ class setInterval:
 
 def get_readable_file_size(size_in_bytes) -> str:
     if size_in_bytes is None:
-        return '0B'
+        return '0 B'
     index = 0
     while size_in_bytes >= 1024:
         size_in_bytes /= 1024
@@ -92,17 +92,17 @@ def get_readable_message():
     with download_dict_lock:
         msg = ""
         for download in list(download_dict.values()):
-            msg += f"<i>{download.name()}</i> - "
-            msg += download.status()
-            if download.status() != MirrorStatus.STATUS_ARCHIVING and download.status() != MirrorStatus.STATUS_EXTRACTING:
-                msg += f"\n<code>{get_progress_bar_string(download)} {download.progress()}</code> of " \
-                       f"{download.size()}" \
-                       f" at {download.speed()}, ETA: {download.eta()} "
+            msg += f"<b>Filename :</b> <code>{download.name()}</code>"
+            msg += f"\n<b>Status :</b> <code>{download.status()}</code>"
+            if download.status() != MirrorStatus.STATUS_ARCHIVING:
+                msg += f"\n<code>{get_progress_bar_string(download)} {download.progress()}</code>" \
+                       f"\n<b>Progress :</b> <code>{get_readable_file_size(download.processed_bytes())} / {download.size()}</code>" \
+                       f"\n<b>Speed :</b> <code>{download.speed()}</code> \n<b>ETA :</b> <code>{download.eta()}</code>"
             if download.status() == MirrorStatus.STATUS_DOWNLOADING:
                 if hasattr(download, 'is_torrent'):
-                    msg += f"| P: {download.aria_download().connections} " \
-                           f"| S: {download.aria_download().num_seeders}"
-                msg += f"\nGID: <code>{download.gid()}</code>"
+                    msg += f"\n<b>Info :- Seeders:</b> <code>{download.aria_download().num_seeders}</code>" \
+                        f" & <b>Peers :</b> <code>{download.aria_download().connections}</code>"
+                msg += f"\n<code>/cancel {download.gid()}</code>"
             msg += "\n\n"
         return msg
 
