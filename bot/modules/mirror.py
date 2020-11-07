@@ -90,10 +90,10 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             path = f'{DOWNLOAD_DIR}{self.uid}/{name}'
         up_name = pathlib.PurePath(path).name
+        up_path = f'{DOWNLOAD_DIR}{self.uid}/{up_name}'
         LOGGER.info(f"Upload Name : {up_name}")
         drive = gdriveTools.GoogleDriveHelper(up_name, self)
-        if size == 0:
-            size = fs_utils.get_path_size(m_path)
+        size = fs_utils.get_path_size(up_path)
         upload_status = UploadStatus(drive, size, self)
         with download_dict_lock:
             download_dict[self.uid] = upload_status
@@ -132,9 +132,9 @@ class MirrorListener(listeners.MirrorListeners):
     def onUploadProgress(self):
         pass
 
-    def onUploadComplete(self, link: str):
+    def onUploadComplete(self, link: str, size):
         with download_dict_lock:
-            msg = f'<a href="{link}">{download_dict[self.uid].name()}</a> <i>({download_dict[self.uid].size()})</i>'
+            msg = f'<a href="{link}">{download_dict[self.uid].name()}</a> <i>({size})</i>'
             LOGGER.info(f'Done Uploading {download_dict[self.uid].name()}')
             if INDEX_URL is not None:
                 share_url = requests.utils.requote_uri(f'{INDEX_URL}/{download_dict[self.uid].name()}')
