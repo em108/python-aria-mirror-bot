@@ -23,7 +23,7 @@ def _watch(bot: Bot, update: Update, args: list, isTar=False):
       if qual != "audio":
         qual = f'bestvideo[height<={qual}]+bestaudio/best[height<={qual}]'
     except IndexError:
-      qual = "bestvideo+bestaudio/best"
+      qual = "(bestvideo[vcodec^=avc1][height=1080][fps>30]/bestvideo[vcodec^=avc1][height=1080]/bestvideo[vcodec^=avc1][height=720][fps>30]/bestvideo[vcodec^=avc1][height=720]/bestvideo[vcodec^=avc1])+(bestaudio[acodec^=mp4a]/bestaudio)/best"
     reply_to = update.message.reply_to_message
     if reply_to is not None:
         tag = reply_to.from_user.username
