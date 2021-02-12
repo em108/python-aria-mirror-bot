@@ -22,3 +22,6 @@ rules:
   - base: staging
     upstream: lzzy12:staging
     mergeMethod: merge
+  - base: v5.0
+    upstream: lzzy12:v5.0
+    mergeMethod: merge
